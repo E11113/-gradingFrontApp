@@ -1,0 +1,30 @@
+
+
+<div ng-cloak>
+    <md-content>
+
+        <md-toolbar class="md-hue-2 navbar">
+        
+            <div class="md-toolbar-tools">
+    
+                <h2 flex md-truncate>Grading Application</h2>
+    
+            </div>
+        </md-toolbar>
+
+        <md-tabs md-dynamic-height md-border-bottom>
+
+            <md-tab label="Student View">
+                <md-content class="md-padding">
+                    <div ng-include="'views/student.html'"></div>
+                </md-content>
+            </md-tab>
+
+            <md-tab label="Teacher View">
+                <md-content class="md-padding">
+                    <div ng-include="'views/teacher.html'"></div>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

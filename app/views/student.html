@@ -1,0 +1,97 @@
+<div>
+
+    <div layout="row">
+
+        <div flex="50" layout="row">
+            <md-input-container class="md-block" flex>
+                <label>Select Class</label>
+                <md-select name="selectedClass" ng-model="selectedClass"
+                    ng-change="changeClass(selectedClass);selectedStudent = undefined;">
+                    <md-option ng-value="class" ng-repeat="class in classes">{{ class.name }}</md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex>
+                <label>Select Student</label>
+                <md-select name="selectedProduct" ng-model="selectedStudent" ng-change="changeStudent(selectedStudent)">
+                    <md-option ng-value="student" ng-repeat="student in students">{{ student.name }}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <div flex="50">
+
+            <table ng-if="selectedStudent" style="margin-left: 40px;">
+                <tr>
+                    <td style="width:40%;font-weight: 700;">Name</td>
+                    <td style="width:10%;font-weight: 700;">:</td>
+                    <td style="width:40%;">{{selectedStudent.name}}</td>
+                </tr>
+                <tr>
+                    <td style="width:40%;font-weight: 700;">Registration No</td>
+                    <td style="width:10%;font-weight: 700;">:</td>
+                    <td style="width:40%;">{{selectedStudent.regNo}}</td>
+                </tr>
+                <tr>
+                    <td style="width:40%;font-weight: 700;">Gender</td>
+                    <td style="width:10%;font-weight: 700;">:</td>
+                    <td style="width:40%;">{{selectedStudent.gender}}</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+
+    <div layout="row">
+
+        <div flex="30">
+
+            <div ng-repeat="x in assignmentList">
+                <md-card style="border-radius: 20px;" ng-click="getQuestions(x, selectedStudent)">
+                    <md-card-content>
+                        <span style="font-weight: 700;">{{x.assName}}</span><br>
+                        <span style="font-size: 13px;">Course : {{x.courseName}}, <span style="font-weight: 700;">Grade
+                                : {{x.grade}}</span></span><br>
+                        <span style="font-size: 13px;">Marks : {{x.marks}}/{{x.allocatedMarks}}, Time Spent :
+                            {{x.timeSpent}} min/{{x.allocatedTime}} min</span><br>
+                        <span style="font-size: 13px;">Date : {{x.dateTime | date : 'MMMM d, y h:mm a'}}</span><br>
+                    </md-card-content>
+                </md-card>
+            </div>
+        </div>
+
+        <div flex="70" style="margin-top: -25px;">
+
+            <table ng-if="questions.length > 0" datatable="ng" dt-instance="dtInstance" class="responsive table-grid"
+                dt-options="dtOptions">
+                <thead>
+                    <tr>
+                        <th style="text-align: left;">#</th>
+                        <th style="text-align: left;">Question</th>
+                        <th style="text-align: left;">Your Answer</th>
+                        <th style="text-align: left;">Correct Answer</th>
+                        <th style="text-align: left;">Result</th>
+                        <th style="text-align: left;">Marks</th>
+                        <th style="text-align: left;">Time Spent</th>
+                        <th style="text-align: left;">No of Attempts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dt-rows ng-repeat="x in questions">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ x.question}}</td>
+                        <td>{{ x.givenAnswer }}</td>
+                        <td>{{ x.correctAnswer}}</td>
+                        <td>{{ x.result }}</td>
+                        <td>{{ x.marks }}/{{x.allocatedMarks}}</td>
+                        <td>{{ x.timeSpent}} Min</td>
+                        <td>{{ x.attemptsCount }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</div>

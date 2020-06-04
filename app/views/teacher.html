@@ -1,0 +1,115 @@
+<div style="margin: 0px 120px;" ng-init="searchGrade = true">
+
+    <div layout="row" style="text-align: center;">
+
+        <div flex style="text-align: right;">
+            <md-button class="md-raised" ng-click="reset();searchGrade = true;searchingClass=undefined;searchingCourse=undefined;searchingAssignment=undefined;">
+                Overall grade details 
+            </md-button>
+        </div>
+
+        <div flex style="text-align: left;">
+            <md-button class="md-raised" ng-click="reset();searchGrade = false;searchingClass=undefined;searchingCourse=undefined;searchingAssignment=undefined;">
+                Statistics on questions 
+            </md-button>
+        </div>
+
+    </div>
+
+    <md-card style="margin: 0px;">
+
+        <md-card-title style="padding: 16px 16px 0px 16px;">
+            <md-card-title-text ng-show="searchGrade">
+                <span class="md-headline">Overall grade details</span>
+            </md-card-title-text>
+            <md-card-title-text ng-show="!searchGrade">
+                <span class="md-headline">Statistics on questions</span>
+            </md-card-title-text>
+        </md-card-title>
+
+        <md-card-content>
+
+                <div layout="row">
+
+                    <md-input-container class="md-block" flex="30">
+                        <label>Select Class</label>
+                        <md-select name="searchingClass" ng-model="searchingClass"
+                            ng-change="changeSearchingClass(searchingClass);searchingCourse=undefined;searchingAssignment=undefined;">
+                            <md-option ng-value="class" ng-repeat="class in classes">{{ class.name }}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex="30">
+                        <label>Select Course</label>
+                        <md-select name="searchingCourse" ng-model="searchingCourse"
+                            ng-change="changeSearchingCourse(searchingCourse, searchGrade);searchingAssignment=undefined;">
+                            <md-option ng-value="course" ng-repeat="course in courses">{{ course.name }}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container ng-show="!searchGrade" class="md-block" flex="30">
+                        <label>Select Assignment</label>
+                        <md-select name="searchingAssignment" ng-model="searchingAssignment" ng-change="changeAssignment()">
+                            <md-option ng-value="assignment" ng-repeat="assignment in assignments">{{ assignment.name }}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <div flex="10"style="margin: 10px;"> 
+
+                        <md-button ng-show="searchGrade" class="md-raised md-warn" ng-disabled="!searchingClass" ng-click="searchGrades(searchingClass, searchingCourse)">
+                            Search
+                        </md-button>
+                        <md-button ng-show="!searchGrade" class="md-raised md-warn" ng-disabled="!searchingAssignment" ng-click="searchQuestions(searchingAssignment)">
+                            Search
+                        </md-button>
+                    </div>
+
+                </div>
+
+                <div ng-show="gradeStatistics.length > 0" >
+                    <table datatable="ng" dt-instance="dtInstance1" class="responsive table-grid"
+                        dt-options="dtOptions1">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Grade</th>
+                                <th style="text-align: left;">No of Students</th>
+                                <th style="text-align: left;">Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dt-rows ng-repeat="x in gradeStatistics">
+                                <td>{{ x.grade}}</td>
+                                <td>{{ x.count }}</td>
+                                <td>{{ x.count/x.total*100 | number : 2}}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div ng-show="questionStatistics.length > 0">
+                    <table datatable="ng" dt-instance="dtInstance2" class="responsive table-grid"
+                        dt-options="dtOptions2">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Question</th>
+                                <th style="text-align: left;">No of Correct Answers</th>
+                                <th style="text-align: left;">No of Partial Answers</th>
+                                <th style="text-align: left;">No of Incorrect Answers</th>
+                                <th style="text-align: left;">Average Time Spent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dt-rows ng-repeat="x in questionStatistics">
+                                <td>{{ x.question}}</td>
+                                <td>{{ x.correctCount }} ( {{x.correctCount/x.totalAnswerCount*100 | number : 2}}% )</td>
+                                <td>{{ x.totalAnswerCount - x.correctCount - x.incorrectCount }} ( {{(x.totalAnswerCount - x.correctCount - x.incorrectCount)/x.totalAnswerCount*100 | number : 2}}% )</td>
+                                <td>{{ x.incorrectCount }} ( {{x.incorrectCount/x.totalAnswerCount*100 | number : 2}}% )</td>
+                                <td>{{ x.avgSpentTime | number : 2}} Min</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            
+        </md-card-content>
+    </md-card>
+</div>
